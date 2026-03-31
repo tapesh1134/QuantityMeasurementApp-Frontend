@@ -27,7 +27,7 @@ export const HistoryPanel = () => {
       case 'CONVERT':
         return `${val1} → ${resultString}`;
       case 'DIVIDE':
-        return `${val1} / ${val2} = ${resultValue}`;
+        return `${val1} / ${val2} = ${resultString}`;
       case 'COMPARE':
         return `${val1} == ${val2} → ${resultString}`;
       default:
@@ -65,8 +65,8 @@ export const HistoryPanel = () => {
             >
               <div className="flex justify-between items-start mb-1">
                 <span className={`text-[10px] font-black px-2 py-0.5 rounded ${item.operation === 'ADD' ? 'bg-green-500/10 text-green-500' :
-                    item.operation === 'CONVERT' ? 'bg-blue-500/10 text-blue-500' :
-                      'bg-purple-500/10 text-purple-500'
+                  item.operation === 'CONVERT' ? 'bg-blue-500/10 text-blue-500' :
+                    'bg-purple-500/10 text-purple-500'
                   }`}>
                   {item.operation}
                 </span>

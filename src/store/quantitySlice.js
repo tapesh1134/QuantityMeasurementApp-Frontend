@@ -123,11 +123,18 @@ const quantitySlice = createSlice({
     setCategory: (state, action) => {
       state.category = action.payload;
 
-      const defaultUnit = state.units[action.payload][0];
+      // 1. Reset operation if switching to TEMPERATURE while on an invalid op
+      const forbiddenTempOps = ['ADDITION', 'SUBTRACTION', 'DIVISION'];
+      if (action.payload === 'TEMPERATURE' && forbiddenTempOps.includes(state.operation)) {
+        state.operation = 'EQUALITY';
+      }
 
+      // 2. Update units as before
+      const defaultUnit = state.units[action.payload][0];
       state.q1.unit = defaultUnit;
       state.q2.unit = state.units[action.payload][1] || defaultUnit;
       state.targetUnit = defaultUnit;
+      state.result = null; // Clear previous result when category changes
     },
 
     updateQ1: (state, action) => {

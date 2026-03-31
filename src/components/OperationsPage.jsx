@@ -37,6 +37,9 @@ const OperationsPage = () => {
         dispatch(fetchHistory());
     }, [dispatch]);
 
+    const forbiddenTempOps = ['ADDITION', 'SUBTRACTION', 'DIVISION'];
+    const isTemperatureArithmetic = category === "TEMPERATURE" && forbiddenTempOps.includes(operation);
+
     const handleCalculate = async () => {
         if (isTemperatureArithmetic) return;
 
@@ -60,7 +63,7 @@ const OperationsPage = () => {
             case 'CONVERT':
                 return `${val1} → ${resultString}`;
             case 'DIVIDE':
-                return `${val1} / ${val2} = ${resultValue}`;
+                return `${val1} / ${val2} = ${resultString}`;
             case 'COMPARE':
                 return `${val1} == ${val2} → ${resultString}`;
             default:
@@ -68,18 +71,16 @@ const OperationsPage = () => {
         }
     };
 
-    const isTemperatureArithmetic =
-        category.id === "TEMPERATURE" &&
-        ["ADD", "SUBTRACT", "DIVIDE"].includes(operation);
-
     const displayResult =
         isTemperatureArithmetic
             ? "Arithmetic operations are not supported for Temperature"
             : result?.operation === "COMPARE"
                 ? result?.resultString
-                : result?.resultValue != null
-                    ? `${result.resultValue} ${result.resultUnit}`
-                    : '';
+                : result?.operation === "DIVIDE"
+                    ? result?.resultString   // ✅ FIX HERE
+                    : result?.resultValue != null
+                        ? `${result.resultValue} ${result.resultUnit}`
+                        : result?.resultString || '';
 
     return (
         <div className="pt-20 pb-32 px-6">
@@ -102,10 +103,10 @@ const OperationsPage = () => {
                             <OperationSelector
                                 selected={operation}
                                 onSelect={(id) => dispatch(setOperation(id))}
-                                category={category}   // ✅ ADD THIS
+                                // Pass the forbidden operations based on category
+                                disabledOperations={category === 'TEMPERATURE' ? forbiddenTempOps : []}
                             />
                         </section>
-
                         {/* Step 2 */}
                         <section>
                             <CategorySelector
@@ -113,6 +114,12 @@ const OperationsPage = () => {
                                 onSelect={(id) => dispatch(setCategory(id))}
                             />
                         </section>
+
+                        {isTemperatureArithmetic && (
+                            <div className="text-red-400 text-sm font-medium mt-2">
+                                ⚠️ Arithmetic operations are not supported for Temperature.
+                            </div>
+                        )}
 
                         {/* Step 3 */}
                         <section className="bg-gray-800/30 p-6 rounded-2xl border border-gray-700">
