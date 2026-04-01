@@ -5,10 +5,12 @@ import { store } from './store/store';
 import App from './App';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <BrowserRouter>   {/* ✅ THIS FIXES EVERYTHING */}
+    <BrowserRouter>
+    <ScrollToTop />
     <App />
   </BrowserRouter>
   </Provider>

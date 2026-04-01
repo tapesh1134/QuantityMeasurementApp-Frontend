@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import Profile from './components/Profile';
 import OperationsPage from './components/OperationsPage';
 import { HistoryPanel } from './components/HistoryPanel';
+import ToastContainer from './components/ToastContainer';
 
 function App() {
   const { isOpen, view } = useSelector((state) => state.modal);
@@ -23,48 +24,51 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white flex flex-col">
-      <Navbar />
+    <>
+    <ToastContainer />
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white flex flex-col">
+        <Navbar />
 
-      {/* MAIN CONTENT AREA */}
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          
-          {/* Protected Routes */}
-          <Route 
-            path="/operations" 
-            element={isAuthenticated ? <OperationsPage /> : <Navigate to="/" />} 
-          />
-          <Route 
-            path="/history" 
-            element={isAuthenticated ? <HistoryPanel /> : <Navigate to="/" />} 
-          />
-          <Route 
-            path="/profile" 
-            element={isAuthenticated ? <Profile /> : <Navigate to="/" />} 
-          />
+        {/* MAIN CONTENT AREA */}
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </main>
+            {/* Protected Routes */}
+            <Route
+              path="/operations"
+              element={<OperationsPage />}
+            />
+            <Route
+              path="/history"
+              element={isAuthenticated ? <HistoryPanel /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/profile"
+              element={isAuthenticated ? <Profile /> : <Navigate to="/" />}
+            />
 
-      <Footer />
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </main>
 
-      {/* ✅ MODAL SYSTEM */}
-      {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-md"
-            onClick={() => dispatch(closeModal())}
-          />
-          <div className="relative z-10 w-full max-w-md animate-in fade-in zoom-in duration-300">
-            {view === 'login' ? <Login /> : <Signup />}
+        <Footer />
+
+        {/* ✅ MODAL SYSTEM */}
+        {isOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+              onClick={() => dispatch(closeModal())}
+            />
+            <div className="relative z-10 w-full max-w-md animate-in fade-in zoom-in duration-300">
+              {view === 'login' ? <Login /> : <Signup />}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
 

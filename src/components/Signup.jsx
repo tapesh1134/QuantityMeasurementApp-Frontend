@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, clearError } from '../store/authSlice';
 import { openLogin } from '../store/modalSlice';
+import { addToast } from '../store/toastSlice';
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const { loading, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+      if (error) {
+        dispatch(
+          addToast({
+            type: "error",
+            title: "Login failed",
+            message: error,
+          })
+        );
+      }
+    }, [error, dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +28,10 @@ const Signup = () => {
       await dispatch(registerUser(formData)).unwrap();
       dispatch(clearError());
       dispatch(openLogin()); // ✅ open login modal
+      dispatch(addToast({
+        type: "success",
+        message: "Signup successful!",
+      }));
     } catch (err) {
       console.error(err); // error already handled in redux
     }
@@ -82,7 +99,6 @@ const Signup = () => {
       {/* 🔵 Google Login */}
       <button
         onClick={handleGoogleLogin}
-        disabled
         className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-semibold py-3 rounded-xl mb-4 hover:bg-gray-100 transition-all"
       >
         <img
@@ -92,7 +108,6 @@ const Signup = () => {
         />
         Continue with Google
       </button>
-      <p className="mt-6 text-center text-sm">OAuth2 login is only supported on a secure domain.</p>
     </div>
   );
 };

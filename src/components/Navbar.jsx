@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { openLogin, openSignup } from '../store/modalSlice';
 import { logoutUser } from '../store/authSlice';
 import { Menu, X } from 'lucide-react';
+import { addToast } from '../store/toastSlice';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,10 @@ const Navbar = () => {
     try {
       await dispatch(logoutUser()).unwrap();
       navigate('/');
+      dispatch(addToast({
+        type: "success",
+        message: "Logged out successfully!",
+      }));
     } catch (err) {
       console.error('Logout failed:', err);
     }
@@ -43,12 +48,12 @@ const Navbar = () => {
             Home
           </Link>
 
+          <Link to="/operations" className="text-gray-300 hover:text-white transition">
+            Tools
+          </Link>
+
           {isAuthenticated && (
             <>
-              <Link to="/operations" className="text-gray-300 hover:text-white transition">
-                Tools
-              </Link>
-
               <Link to="/history" className="text-gray-300 hover:text-white transition">
                 History
               </Link>
@@ -119,13 +124,12 @@ const Navbar = () => {
           <Link to="/" onClick={() => setOpen(false)} className="block text-gray-300">
             Home
           </Link>
+          <Link to="/operations" onClick={() => setOpen(false)} className="block text-gray-300">
+            Tools
+          </Link>
 
           {isAuthenticated && (
             <>
-              <Link to="/operations" onClick={() => setOpen(false)} className="block text-gray-300">
-                Tools
-              </Link>
-
               <Link to="/history" onClick={() => setOpen(false)} className="block text-gray-300">
                 History
               </Link>

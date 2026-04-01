@@ -59,10 +59,10 @@ const Home = () => {
           ) : (
             <>
               <button
-                onClick={onGetStarted}
+                onClick={() => navigate("/operations")}
                 className="w-full sm:w-auto px-8 py-4 bg-white text-indigo-600 rounded-2xl font-bold text-lg hover:bg-indigo-50 transition-all shadow-xl hover:shadow-white/20"
               >
-                Get Started Free
+                Try It Now
               </button>
 
               <button

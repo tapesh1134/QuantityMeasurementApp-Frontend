@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, clearError } from '../store/authSlice';
 import { closeModal, openSignup } from '../store/modalSlice';
+import { addToast } from '../store/toastSlice';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -14,8 +15,30 @@ const Login = () => {
 
   // Close modal on success
   useEffect(() => {
-    if (isAuthenticated) dispatch(closeModal());
+    if (isAuthenticated) {
+      dispatch(closeModal());
+
+      dispatch(
+        addToast({
+          type: "success",
+          title: "Login successful!",
+          message: "Welcome back 🎉",
+        })
+      );
+    }
   }, [isAuthenticated, dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      dispatch(
+        addToast({
+          type: "error",
+          title: "Login failed",
+          message: error,
+        })
+      );
+    }
+  }, [error, dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,7 +52,7 @@ const Login = () => {
 
   return (
     <div className="bg-white/20 backdrop-blur-2xl border border-white/30 p-8 rounded-3xl shadow-2xl">
-      
+
       <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
       <p className="text-indigo-100 text-sm mb-6">
         Enter your credentials to continue.
@@ -96,11 +119,10 @@ const Login = () => {
         <span className="px-3 text-sm text-indigo-100">or</span>
         <div className="flex-1 h-px bg-white/20"></div>
       </div>
-      
+
       {/* 🔵 Google Login */}
       <button
         onClick={handleGoogleLogin}
-        disabled
         className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-semibold py-3 rounded-xl mb-4 hover:bg-gray-100 transition-all"
       >
         <img
@@ -110,7 +132,6 @@ const Login = () => {
         />
         Continue with Google
       </button>
-      <p className="mt-6 text-center text-sm">OAuth2 login is only supported on a secure domain.</p>
     </div>
   );
 };
