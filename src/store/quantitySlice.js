@@ -73,7 +73,7 @@ export const fetchHistory = createAsyncThunk(
   'quantity/fetchHistory',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_BASE}/history`);
+      const response = await axios.get("/api/history");
       return response.data.data.reverse();
     } catch (err) {
       return rejectWithValue(

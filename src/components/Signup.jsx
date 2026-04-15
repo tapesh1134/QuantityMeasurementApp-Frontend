@@ -38,7 +38,7 @@ const Signup = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "/oauth2/authorization/google";
+    window.location.href = "/api/auth/oauth2/authorization/google";
   };
 
   return (
