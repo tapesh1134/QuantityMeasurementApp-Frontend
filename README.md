@@ -8,7 +8,7 @@ This is the frontend interface for the QMA system, providing a user-friendly das
 
 ## Deployment
 
-**Live URL:** [http://3.26.17.95:8080/](http://3.26.17.95:8080/)
+**Live URL:** [http://3.27.99.124:8080/](http://3.27.99.124:8080/)
 
 ## Getting Started
 
