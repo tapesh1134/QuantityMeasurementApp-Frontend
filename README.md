@@ -1,6 +1,6 @@
 # QMA Frontend
 
-A modern frontend application for QMA (Quality Management Assurance).
+A modern frontend application for QMA (Quality Management App).
 
 ## Overview
 
